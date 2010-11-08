@@ -1,0 +1,7 @@
+#!/usr/bin/env Rscript
+argv <- commandArgs()
+argv <- argv[-(1:match("--args", argv))]
+options(width=200)
+con <- if(length(argv)) pipe(paste("cat", paste(argv, collapse=" "))) else "stdin"
+
+write.table(table(scan(con, what="", quiet=TRUE)), quote=FALSE, row.names=FALSE, col.names=FALSE)

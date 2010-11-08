@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cmd="$1"
+[ -z "$cmd" ] && read $cmd ## accept command names on stdin
+file=$(which $cmd)
+echo $file
+is-binary-executable $file && \
+    echo it seems to be a binary executable! || \
+    cat $file

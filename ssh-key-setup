@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+remote="$1"
+[ -z "$remote" ] && echo $(basename $0) user@hostname && exit
+keyfile=~/.ssh/id_dsa
+
+[ -e ${keyfile}.pub ] || ssh-keygen -t dsa -N '' -f $keyfile
+cat ${keyfile}.pub | ssh $remote 'cat >> .ssh/authorized_keys'

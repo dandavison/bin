@@ -1,0 +1,4 @@
+#!/bin/bash
+# Show the top left region of stdin
+
+head | cut -b1-50

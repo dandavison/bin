@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+for maildir in $@ ; do
+    mkdir -p $maildir/{cur,new,tmp} && chmod -R 0700 $maildir
+done
