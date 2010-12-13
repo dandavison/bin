@@ -1,0 +1,9 @@
+#!/bin/bash
+ssh davison@gate.stats.ox.ac.uk /usr/sbin/sendmail "$@"
+#ssh ddavison@arizona.princeton.edu /usr/psr.oit/rhel432/2006-2.0/sbin/sendmail "$@"
+
+## tunnel:
+## ssh davison@oak.well.ox.ac.uk "ssh davison@gate.stats.ox.ac.uk /usr/sbin/sendmail $@"
+
+## Send outgoing mail to local disk
+## cat > /tmp/email 
