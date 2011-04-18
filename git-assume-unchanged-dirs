@@ -28,6 +28,4 @@ site/setup
 EOF
 )
 dirs=$(echo $dirs)
-cmd="find $dirs -type f | xargs git update-index --assume-unchanged"
-echo $cmd
-$cmd
+find $dirs -type f | xargs git update-index --assume-unchanged #--no-assume-unchanged
