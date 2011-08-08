@@ -1,0 +1,20 @@
+#!/usr/local/Cellar/python2.6/2.6.5/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'jsonpipe==0.0.5','console_scripts','jsonpipe'
+__requires__ = 'jsonpipe==0.0.5'
+import sys
+from pkg_resources import load_entry_point
+
+if len(sys.argv) > 1:
+    assert len(sys.argv) == 2, \
+           'Either supply data on stdin or supply a single single input filename'
+    sys.stdin = open(sys.argv[1], 'r')
+    sys.argv = [sys.argv[0]]
+
+try:
+    sys.exit(
+        load_entry_point('jsonpipe==0.0.5', 'console_scripts', 'jsonpipe')()
+    )
+except (KeyboardInterrupt, IOError):
+    sys.stdin.close()
+    sys.stdout.write('\n')
+    sys.exit(1)
