@@ -1,2 +1,2 @@
 #!/bin/bash
-LESSOPEN="|pygmentize -g %s" less -RS $1
+pygmentize -g $@
