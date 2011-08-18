@@ -1,6 +1,7 @@
-#!/usr/local/Cellar/python2.6/2.6.5/bin/python
-# EASY-INSTALL-ENTRY-SCRIPT: 'jsonpipe==0.0.5','console_scripts','jsonpipe'
-__requires__ = 'jsonpipe==0.0.5'
+#!/usr/local/Cellar/python/2.7.2/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'jsonpipe==0.0.8','console_scripts','jsonpipe'
+__requires__ = 'jsonpipe==0.0.8'
+
 import sys
 from pkg_resources import load_entry_point
 
@@ -12,7 +13,7 @@ if len(sys.argv) > 1:
 
 try:
     sys.exit(
-        load_entry_point('jsonpipe==0.0.5', 'console_scripts', 'jsonpipe')()
+        load_entry_point('jsonpipe==0.0.8', 'console_scripts', 'jsonpipe')()
     )
 except (KeyboardInterrupt, IOError):
     sys.stdin.close()
