@@ -1,18 +1,30 @@
 #!/bin/sh
+# git diff for regular diff usage
 
-# E.g. diffg was now --word-diff
+cmd=$(basename "$0")
+[ "$1" = "--help" ] && {
+    echo "$cmd [git diff options] fileA fileB"
+    exit 0
+}
 
-# TODO: should be `git-diff --word-diff was now`
 
 a="$1"
 b="$2"
 shift 2
+# Last two args are the files to compare; the rest are options.
+opts=""
+while [ "$1" ] ; do
+    opts="$opts $a"
+    a=$b
+    b=$1
+    shift
+done
 
-tmpdir=$(basename "$0")-$(date '+%Y%m%d%H%M%S')
+tmpdir=$cmd-$(date '+%Y%m%d%H%M%S')
 mkdir "$tmpdir" && ln "$a" "$tmpdir"/a || exit 1
 (cd "$tmpdir" && git init && git add a) > /dev/null
 ln -f "$b" "$tmpdir"/a
-(cd "$tmpdir" && git diff --color=always $@ | sed -n '/@@/,$p' | less -FRSX)
+(cd "$tmpdir" && git diff --color=always $opts | sed -n '/@@/,$p' | less -FRSX)
 rm -rf "$tmpdir" || {
     echo "Failed to remove temp dir $tmpdir"
     exit 1
