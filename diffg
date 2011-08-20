@@ -8,8 +8,8 @@ a="$1"
 b="$2"
 shift 2
 
-tmpdir=/tmp/$(basename "$0")-$(date '+%Y%m%d%H%M%S')
-mkdir $tmpdir && cp "$a" $tmpdir/a && cp "$b" $tmpdir/b || exit 1
+tmpdir=$(basename "$0")-$(date '+%Y%m%d%H%M%S')
+mkdir $tmpdir && ln "$a" $tmpdir/a && ln "$b" $tmpdir/b || exit 1
 cd $tmpdir
 (git init && git add a && git commit -m `basename "$a"`) > /dev/null
 mv b a
