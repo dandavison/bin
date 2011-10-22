@@ -15,4 +15,5 @@ if __name__ == '__main__':
                     print ''.join(pair)
             except ValueError:
                 print ''.join(pair)
-                raise
+                print 'Non-numeric difference encountered'
+                sys.exit(1)
