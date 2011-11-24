@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+import sys
+import numpy as np
+
+DELIM = '\t'
+
+def read(fp):
+    return [l.split(DELIM) for l in fp.readlines()]
+
+
+def write(x, fp):
+    for row in x:
+        fp.write(DELIM.join(row) + '\n')
+
+
+def transpose(x):
+    return np.array(x).transpose()
+
+
+if __name__ == '__main__':
+    write(transpose(read(sys.stdin)),
+          sys.stdout)
