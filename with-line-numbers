@@ -1,0 +1,5 @@
+i=0
+while read line ; do
+    (( i += 1 ))
+    echo "$i\t$line"
+done

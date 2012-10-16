@@ -1,0 +1,5 @@
+#!/bin/sh
+
+root=$(dirname $(git rev-parse --git-dir))
+path=$(grep '^diff' | perl -p -e 's,diff --git a/([^ ]+) b.+,$1,' | sed 1q)
+$EDITOR $root/$path

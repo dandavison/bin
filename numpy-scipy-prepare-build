@@ -1,0 +1,5 @@
+ln -s /usr/bin/g++-4.0 g++
+ln -s /usr/bin/g++-4.0 c++
+export PATH=$PWD:$PATH
+# Pick up gfortran 4.2.3
+export PATH=/usr/local/bin:$PATH

@@ -1,0 +1,8 @@
+#!/bin/bash -x
+
+regex="$1"
+files="${2:-*}"
+
+emacsclient --no-wait \
+    --eval "(rgrep \"$regex\" \"$files\" \"$PWD\")" \
+    --eval "(select-frame-set-input-focus (selected-frame))"

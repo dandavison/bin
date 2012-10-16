@@ -7,5 +7,5 @@ regex="$2"
 }
 
 git log --oneline "$path" | cut -d' ' -f1 | while read commit ; do
-    git-cat $commit "$path" | grep -q "$regex" && echo "$commit has it" || break
+    git show $commit:"$path" | grep -q "$regex" && echo "$commit has it" || break
 done

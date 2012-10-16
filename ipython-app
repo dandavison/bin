@@ -1,0 +1,6 @@
+
+#!/bin/sh
+
+url="$1"
+
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome  --app="$url" --user-data-dir="/Applications/ipython.app/Contents/Profile" "$@"
