@@ -3,7 +3,9 @@
 tell application "System Events"
    tell current location of network preferences
        set VPNservice to service "Counsyl VPN"
-       if exists VPNservice then connect VPNservice
-       if exists VPNservice then tell application "System Events" to activate
+       if exists VPNservice then
+           connect VPNservice
+	   tell application "System Events" to activate
+       end if
    end tell
 end tell
