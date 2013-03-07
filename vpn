@@ -1,0 +1,9 @@
+#!/usr/bin/env osascript
+
+tell application "System Events"
+   tell current location of network preferences
+       set VPNservice to service "Counsyl VPN"
+       if exists VPNservice then connect VPNservice
+       if exists VPNservice then tell application "System Events" to activate
+   end tell
+end tell
