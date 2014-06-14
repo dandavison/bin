@@ -7,11 +7,11 @@ path, text_after = sys.argv[1:]
 [line_num] = re.compile(".+ line (\d+), ").match(text_after).groups()
 line_num = int(line_num)
 
-with open('/tmp/parse-python-traceback-file-position', 'a') as fp:
-    fp.write("%s:%d\n" % (path, line_num))
+cmd = (
+    '/usr/local/bin/emacsclient --no-wait '
+    '--eval "(find-file \\"%s\\")" '
+    '--eval "(goto-line %d)" '
+    '--eval "(select-frame-set-input-focus (selected-frame))"'
+) % (path, line_num)
 
-os.system("""
-emacsclient --no-wait \
-    --eval "(find-file \\"%s\\")" \
-    --eval "(goto-line %d)"
-""" % (path, line_num))
+os.system(cmd)
