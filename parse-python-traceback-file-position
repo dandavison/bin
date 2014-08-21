@@ -4,7 +4,7 @@ import re
 import sys
 
 path, text_after = sys.argv[1:]
-[line_num] = re.compile(".+ line (\d+), ").match(text_after).groups()
+[line_num] = re.compile('[^"]*", line (\d+), ').match(text_after).groups()
 line_num = int(line_num)
 
 cmd = (
