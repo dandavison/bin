@@ -34,7 +34,6 @@ def notify_if_vpn_has_gone_down():
         last_known_state, state = state, get_vpn_state()
         if last_known_state != state:
             print "%s -> %s" % (last_known_state, state)
-        if last_known_state == UP and state == DOWN:
             notify(state)
         sleep()
 
