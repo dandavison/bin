@@ -3,6 +3,7 @@ import subprocess
 UNKNOWN = 'UNKNOWN'
 UP = 'UP'
 DOWN = 'DOWN'
+BRING_UP_VPN_CMD = '/Users/dan/bin/vpn'
 
 
 def get_vpn_state():
@@ -20,8 +21,12 @@ def notify(state):
         'terminal-notifier',
         '-title', 'VPN alert',
         '-message', 'VPN is %s' % state,
-        '-execute', '/Users/dan/bin/vpn',
+        '-execute', BRING_UP_VPN_CMD,
     ])
+
+
+def bring_up_vpn():
+    subprocess.check_call([BRING_UP_VPN_CMD])
 
 
 def sleep():
@@ -34,7 +39,8 @@ def notify_if_vpn_has_gone_down():
         last_known_state, state = state, get_vpn_state()
         if last_known_state != state:
             print "%s -> %s" % (last_known_state, state)
-            notify(state)
+            if state == DOWN:
+                bring_up_vpn()
         sleep()
 
 
