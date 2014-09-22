@@ -4,5 +4,5 @@ regex="$1"
 files="${2:-*}"
 
 emacsclient --no-wait \
-    --eval "(ag \"$regex\" \"$PWD\")" \
-    --eval "(select-frame-set-input-focus (selected-frame))" > /dev/null
+    --eval \'"(ag \"$regex\" \"$PWD\")"\' \
+    --eval \'"(select-frame-set-input-focus (selected-frame))"\' > /dev/null
