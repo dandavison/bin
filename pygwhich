@@ -1,0 +1,1 @@
+pygmentize -g $(which $1)
