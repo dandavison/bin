@@ -4,13 +4,12 @@ _is_osx () {
     [ -e /Applications ]
 }
 
-HOST_ADDRESS=10.0.2.2
+if _is_osx ; then
+    HOST_ADDRESS=localhost
+else
+    HOST_ADDRESS=10.0.2.2
+fi
+
 HOST_EMACSCLIENT=/usr/local/bin/emacsclient
 
-if _is_osx ; then
-    # FIXME: This isn't working on OSX with zsh
-    # ERROR*: End of file during parsing%
-    $HOST_EMACSCLIENT $@
-else
-    ssh $HOST_ADDRESS "cd $PWD && $HOST_EMACSCLIENT $@"
-fi
+ssh $HOST_ADDRESS "cd $PWD && $HOST_EMACSCLIENT $@"
