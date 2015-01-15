@@ -1,17 +1,36 @@
 #!/usr/bin/env python
 import os
 import re
+import subprocess
 import sys
 
-path, text_after = sys.argv[1:]
-[line_num] = re.compile('[^"]*", line (\d+), ').match(text_after).groups()
-line_num = int(line_num)
+ERROR_LOG = '/tmp/parse-python-traceback-file-position.error'
 
-cmd = (
-    '/usr/local/bin/emacsclient --no-wait '
-    '--eval "(find-file \\"%s\\")" '
-    '--eval "(goto-line %d)" '
-    '--eval "(select-frame-set-input-focus (selected-frame))"'
-) % (path, line_num)
+def notify(message):
+    subprocess.check_call([
+        '/usr/local/bin/terminal-notifier',
+        '-title', 'Error',
+        '-message', message,
+    ])
 
-os.system(cmd)
+try:
+    path, text_after = sys.argv[1:]
+    [line_num] = re.compile('[^"]*", line (\d+)').match(text_after).groups()
+    line_num = int(line_num)
+    cmd = (
+        '/usr/local/bin/emacsclient --no-wait '
+        '--eval "(find-file \\"%s\\")" '
+        '--eval "(goto-line %d)" '
+        '--eval "(select-frame-set-input-focus (selected-frame))"'
+    ) % (path, line_num)
+    os.system(cmd)
+except Exception as ex:
+    msg = '%s: %s\n' % (type(ex).__name__, ex)
+    with open(ERROR_LOG, 'w') as fp:
+        fp.write(msg)
+    try:
+        notify(msg)
+    except Exception as ex:
+        msg = '%s: %s\n' % (type(ex).__name__, ex)
+        with open(ERROR_LOG, 'a') as fp:
+            fp.write(msg)
