@@ -1,5 +1,3 @@
 #!/bin/bash
 
-emacsclient --no-wait \
-    --eval \'"(magit-status \"$PWD\")"\' \
-    --eval \'"(progn (select-frame-set-input-focus (selected-frame)) (delete-other-windows))"\' > /dev/null
+emacsclient --no-wait --eval \'"(magit-status \"$PWD\")"\' > /dev/null
