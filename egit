@@ -1,3 +1,6 @@
 #!/bin/bash
 
-emacsclient --no-wait --eval \'"(magit-status \"$PWD\")"\' > /dev/null
+# An extra layer of quoting is present because the arguments are passed over ssh
+emacsclient-remote \
+    --no-wait \
+    --eval \'"(progn (magit-status \"$PWD\") (select-frame-set-input-focus (selected-frame)))"\'
