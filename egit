@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# An extra layer of quoting is present because the arguments are passed over ssh
-emacsclient-remote \
+emacsclient \
     --no-wait \
-    --eval \'"(progn (magit-status \"$PWD\") (select-frame-set-input-focus (selected-frame)))"\'
+    --eval "(progn (magit-status \"$PWD\") (select-frame-set-input-focus (selected-frame)))"

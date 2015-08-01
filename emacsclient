@@ -4,12 +4,13 @@ _is_osx () {
     [ -e /Applications ]
 }
 
+EMACSCLIENT=/usr/local/bin/emacsclient
+
 if _is_osx ; then
-    HOST_ADDRESS=localhost
+     $EMACSCLIENT $@
 else
-    HOST_ADDRESS=10.0.2.2
+    echo "Remote not currently implemented." 1>&2
+    echo "String value of emacsclient --eval needs to be wrapped in \\'" 1>&2
+    # ssh 10.0.2.2 "cd $PWD && $EMACSCLIENT $@"
+    exit 1
 fi
-
-HOST_EMACSCLIENT=/usr/local/bin/emacsclient
-
-ssh $HOST_ADDRESS "cd $PWD && $HOST_EMACSCLIENT $@"
