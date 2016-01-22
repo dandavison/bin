@@ -1,1 +1,0 @@
-rename -v 's,_django,django,i' /usr/homebrew/lib/python2.7/site-packages/*
