@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from datetime import datetime
+from contextlib import contextmanager
 import os
 import re
 import subprocess
@@ -7,6 +8,7 @@ import sys
 
 
 LOG = '/tmp/parse-python-traceback-file-position.log'
+EMACSCLIENT = '~/src/emacs-config/bin/emacsclient'
 
 
 def notify(message):
@@ -16,8 +18,10 @@ def notify(message):
         '-message', message,
     ])
 
+
 def now():
     return datetime.now().isoformat(' ').split('.')[0]
+
 
 def log(*lines):
     with open(LOG, 'a') as fp:
@@ -25,21 +29,35 @@ def log(*lines):
             fp.write(str(line) + '\n')
             fp.flush()
 
-log(
-    now(),
-    sys.argv,
-    '\n',
-)
 
-try:
-    path, text_after = sys.argv[1:]
-    log(path)
-    log(text_after)
+def logkv(k, v):
+    log('%-30s %s' % (k + ':', v))
+
+
+@contextmanager
+def notification_on_error():
+    try:
+        yield
+    except Exception as ex:
+        msg = '%s: %s\n' % (type(ex).__name__, ex)
+        log(msg)
+        try:
+            notify(msg)
+        except Exception as ex:
+            msg = '%s: %s\n' % (type(ex).__name__, ex)
+            log('Error when notifying:', msg)
+        finally:
+            exit(1)
+
+
+def get_path_and_line(path, text_after):
+    logkv('path', path)
+    logkv('text_after', text_after)
     path = re.sub('\.pyc$', '.py', path)
     match = (
         # python stack trace, e.g.
         # File "/path/to/somefile.py", line 336, in some_function
-        re.match(r'[^"]*", line (\d+)', text_after) or
+        re.match(r'[^"]*", line (\d+).*', text_after) or
         # ipdb stack trace
         # > /path/to/somefile.py(336)some_function()
         re.match(r'[^(]*\((\d+)\).*', text_after)
@@ -47,26 +65,35 @@ try:
         # /home/dan/nfs-share/website/counsyl/product/data_entry/tests/__init__.py(1005)assertKey()
     )
     if not match:
-        line_num = 1
+        line = 1
         log('%s (no line number)' % path)
     else:
-        (line_num,) = match.groups()
-        line_num = int(line_num)
-        log('%s:%d' % (path, line_num))
+        (line,) = match.groups()
+        line = int(line)
+        log('%s:%d' % (path, line))
+
+    return path, line
+
+
+def edit_file(path, line):
     cmd = (
-        'emacsclient --no-wait '
-        '--eval "(find-file \\"%s\\")" '
-        '--eval "(goto-line %d)" '
+        '{emacsclient} --no-wait '
+        '--eval "(find-file \\"{path}\\")" '
+        '--eval "(goto-line {line})" '
         '--eval "(select-frame-set-input-focus (selected-frame))"'
-    ) % (path, line_num)
+    ).format(emacsclient=EMACSCLIENT, path=path, line=line)
+    log(cmd)
     os.system(cmd)
-except Exception as ex:
-    msg = '%s: %s\n' % (type(ex).__name__, ex)
-    log(msg)
-    try:
-        notify(msg)
-    except Exception as ex:
-        msg = '%s: %s\n' % (type(ex).__name__, ex)
-        log('Error when notifying:', msg)
-finally:
-    log('\n')
+
+
+if __name__ == '__main__':
+    log(
+        now(),
+        sys.argv,
+        '\n',
+    )
+    with notification_on_error():
+        path, line = get_path_and_line(*sys.argv[1:])
+
+    with notification_on_error():
+        edit_file(path, line)
