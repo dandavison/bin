@@ -8,7 +8,7 @@ import sys
 
 
 LOG = '/tmp/parse-python-traceback-file-position.log'
-EMACSCLIENT = '~/src/emacs-config/bin/emacsclient'
+EMACSCLIENT = os.path.expanduser('~/src/emacs-config/bin/emacsclient')
 
 
 def notify(message):
@@ -19,19 +19,11 @@ def notify(message):
     ])
 
 
-def now():
-    return datetime.now().isoformat(' ').split('.')[0]
-
-
-def log(*lines):
+def log(line):
+    time = datetime.now().isoformat(' ').split('.')[0]
     with open(LOG, 'a') as fp:
-        for line in lines:
-            fp.write(str(line) + '\n')
-            fp.flush()
-
-
-def logkv(k, v):
-    log('%-30s %s' % (k + ':', v))
+        fp.write('%s %s\n' % (time, line))
+        fp.flush()
 
 
 @contextmanager
@@ -40,19 +32,12 @@ def notification_on_error():
         yield
     except Exception as ex:
         msg = '%s: %s\n' % (type(ex).__name__, ex)
+        notify(msg)
         log(msg)
-        try:
-            notify(msg)
-        except Exception as ex:
-            msg = '%s: %s\n' % (type(ex).__name__, ex)
-            log('Error when notifying:', msg)
-        finally:
-            exit(1)
+        exit(1)
 
 
 def get_path_and_line(path, text_after):
-    logkv('path', path)
-    logkv('text_after', text_after)
     path = re.sub('\.pyc$', '.py', path)
     match = (
         # python stack trace, e.g.
@@ -76,22 +61,18 @@ def get_path_and_line(path, text_after):
 
 
 def edit_file(path, line):
-    cmd = (
-        '{emacsclient} --no-wait '
-        '--eval "(find-file \\"{path}\\")" '
-        '--eval "(goto-line {line})" '
-        '--eval "(select-frame-set-input-focus (selected-frame))"'
-    ).format(emacsclient=EMACSCLIENT, path=path, line=line)
+    cmd = [
+        EMACSCLIENT,
+        '--no-wait',
+        '--eval', '(find-file "%s")' % path,
+        '--eval', '(goto-line %d)' % line,
+        '--eval', '(select-frame-set-input-focus (selected-frame))',
+    ]
     log(cmd)
-    os.system(cmd)
+    subprocess.check_call(cmd)
 
 
 if __name__ == '__main__':
-    log(
-        now(),
-        sys.argv,
-        '\n',
-    )
     with notification_on_error():
         path, line = get_path_and_line(*sys.argv[1:])
 
