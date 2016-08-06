@@ -1,7 +1,0 @@
-#!/bin/bash
-
-regex="$1"
-files="${2:-*}"
-
-emacsclient --no-wait \
-    --eval "(progn (dan/search \"$regex\" \"$PWD\") (select-frame-set-input-focus (selected-frame)) (other-window 1) (delete-other-windows))" > /dev/null
