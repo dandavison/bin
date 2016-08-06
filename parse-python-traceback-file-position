@@ -1,10 +1,13 @@
 #!/usr/bin/env python
+from datetime import datetime
 import os
 import re
 import subprocess
 import sys
 
-ERROR_LOG = '/tmp/parse-python-traceback-file-position.error'
+
+LOG = '/tmp/parse-python-traceback-file-position.log'
+
 
 def notify(message):
     subprocess.check_call([
@@ -13,12 +16,45 @@ def notify(message):
         '-message', message,
     ])
 
+def now():
+    return datetime.now().isoformat(' ').split('.')[0]
+
+def log(*lines):
+    with open(LOG, 'a') as fp:
+        for line in lines:
+            fp.write(str(line) + '\n')
+            fp.flush()
+
+log(
+    now(),
+    sys.argv,
+    '\n',
+)
+
 try:
     path, text_after = sys.argv[1:]
-    [line_num] = re.compile('[^"]*", line (\d+)').match(text_after).groups()
-    line_num = int(line_num)
+    log(path)
+    log(text_after)
+    path = re.sub('\.pyc$', '.py', path)
+    match = (
+        # python stack trace, e.g.
+        # File "/path/to/somefile.py", line 336, in some_function
+        re.match(r'[^"]*", line (\d+)', text_after) or
+        # ipdb stack trace
+        # > /path/to/somefile.py(336)some_function()
+        re.match(r'[^(]*\((\d+)\).*', text_after)
+        # Fails for
+        # /home/dan/nfs-share/website/counsyl/product/data_entry/tests/__init__.py(1005)assertKey()
+    )
+    if not match:
+        line_num = 1
+        log('%s (no line number)' % path)
+    else:
+        (line_num,) = match.groups()
+        line_num = int(line_num)
+        log('%s:%d' % (path, line_num))
     cmd = (
-        '/usr/local/bin/emacsclient --no-wait '
+        'emacsclient --no-wait '
         '--eval "(find-file \\"%s\\")" '
         '--eval "(goto-line %d)" '
         '--eval "(select-frame-set-input-focus (selected-frame))"'
@@ -26,11 +62,11 @@ try:
     os.system(cmd)
 except Exception as ex:
     msg = '%s: %s\n' % (type(ex).__name__, ex)
-    with open(ERROR_LOG, 'w') as fp:
-        fp.write(msg)
+    log(msg)
     try:
         notify(msg)
     except Exception as ex:
         msg = '%s: %s\n' % (type(ex).__name__, ex)
-        with open(ERROR_LOG, 'a') as fp:
-            fp.write(msg)
+        log('Error when notifying:', msg)
+finally:
+    log('\n')
