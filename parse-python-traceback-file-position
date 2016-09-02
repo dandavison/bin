@@ -66,6 +66,7 @@ def edit_file(path, line):
         '--no-wait',
         '--eval', '(find-file "%s")' % path,
         '--eval', '(goto-line %d)' % line,
+        '--eval', '(show-all)',
         '--eval', '(select-frame-set-input-focus (selected-frame))',
     ]
     log(cmd)
