@@ -45,9 +45,11 @@ def get_path_and_line(path, text_after):
         re.match(r'[^"]*", line (\d+).*', text_after) or
         # ipdb stack trace
         # > /path/to/somefile.py(336)some_function()
-        re.match(r'[^(]*\((\d+)\).*', text_after)
         # Fails for
         # /home/dan/nfs-share/website/counsyl/product/data_entry/tests/__init__.py(1005)assertKey()
+        re.match(r'[^(]*\((\d+)\).*', text_after) or
+        # counsyl/product/api/utils/fake.py:18:1:
+        re.match(r'[^:]*:(\d+):\d+:[^:]*', text_after)
     )
     if not match:
         line = 1
