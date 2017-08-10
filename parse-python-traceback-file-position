@@ -54,6 +54,8 @@ def get_path_and_line(path, text_after):
     if not match:
         line = 1
         log('%s (no line number)' % path)
+        log(path)
+        log(text_after)
     else:
         (line,) = match.groups()
         line = int(line)
@@ -67,9 +69,9 @@ def edit_file(path, line):
         EMACSCLIENT,
         '--no-wait',
         '--eval', '(find-file "%s")' % path,
-        '--eval', '(goto-line %d)' % line,
-        '--eval', '(show-all)',
         '--eval', '(select-frame-set-input-focus (selected-frame))',
+        '--eval', '(goto-line %d)' % line,
+        '--eval', '(dan/on-jump-into-buffer)',
     ]
     log(cmd)
     subprocess.check_call(cmd)
