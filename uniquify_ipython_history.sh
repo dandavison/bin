@@ -1,6 +1,1 @@
-#!/usr/bin/env sh
-
-histfile=~/.ipython/history
-tmpfile=/tmp/ipython_history 
-
-sort $histfile | uniq -d > $tmpfile && mv $tmpfile $histfile
+../misc/uniquify_ipython_history.sh

@@ -1,1 +1,1 @@
-readlink -f $(which "$1")
+../misc/lwhich

@@ -1,10 +1,1 @@
-#!/bin/sh
-
-[ -z "$1" ] && {
-    echo "$(basename $0) commit filepath"
-    exit 1
-}
-
-git ls-tree "$@" | while read perms what sha1 path ; do
-    git cat-file $what $sha1
-done
+../misc/git-cat

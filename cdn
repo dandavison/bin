@@ -1,1 +1,1 @@
-mkdir -p "$1" && cd "$1" && tmux new-window
+../misc/cdn

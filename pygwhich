@@ -1,1 +1,1 @@
-pygmentize -g $(which $1)
+../misc/pygwhich

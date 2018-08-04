@@ -1,3 +1,1 @@
-#!/bin/bash
-# Runs Drake without Nailgun (needs an uberjar)
-java -cp /Users/dan/lib/clojure/drake/target/drake.jar drake.core $@
+../misc/drake

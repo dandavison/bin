@@ -1,14 +1,1 @@
-#!/bin/bash
-
-set -u
-
-pattern="$1"
-
-git for-each-ref --sort=-committerdate refs/heads --format='%(refname)' | \
-    sed 's,^refs/heads/,,' | \
-    while read branch; do
-        if [[ $branch == *$pattern* ]]; then
-            git checkout $branch
-            exit 0
-        fi
-    done && exit 1
+../misc/git-fuzzy-checkout
