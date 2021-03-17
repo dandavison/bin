@@ -1,5 +1,1 @@
-#!/bin/bash
-
-EMACSCLIENT=/usr/local/opt/emacs-mac/bin/emacsclient
-
-$EMACSCLIENT -n "$@"
+/usr/local/opt/emacs-mac/bin/emacsclient

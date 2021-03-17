@@ -1,0 +1,1 @@
+/Users/dan/src-3p/emacs-mac/mac/Emacs.app/Contents/MacOS/Emacs.sh
