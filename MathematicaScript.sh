@@ -1,1 +1,0 @@
-/Users/dan/src/misc/MathematicaScript.sh
