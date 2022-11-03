@@ -1,0 +1,3 @@
+#!/bin/bash
+set -u
+git diff $* $SOURCE_PROJECT_DIR

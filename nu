@@ -1,0 +1,1 @@
+/Users/ddavison/src/nushell/nushell/target/release/nu

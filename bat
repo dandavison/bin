@@ -1,1 +1,0 @@
-/Users/ddavison/tmp/3p/bat/target/release/bat

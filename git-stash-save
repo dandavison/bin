@@ -1,2 +1,0 @@
-(git diff; git diff --staged) > my-stash
-git apply -R < my-stash
