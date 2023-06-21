@@ -1,1 +1,1 @@
-/Users/ddavison/tmp/3p/tmux/tmux
+/opt/homebrew/bin/tmux

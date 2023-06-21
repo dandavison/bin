@@ -1,1 +1,0 @@
-../misc/git-which-branch-contains.sh

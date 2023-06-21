@@ -1,1 +1,0 @@
-../misc/git_log_summarize_my_work.sh
