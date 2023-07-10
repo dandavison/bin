@@ -1,1 +1,1 @@
-/opt/homebrew/bin/tmux
+/Users/dan/tmp/3p/tmux/tmux
