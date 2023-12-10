@@ -1,1 +1,0 @@
-../../nushell/target/release/nu
