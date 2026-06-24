@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Open args in the current editor, as configured in ~/.wormhole/wormhole.toml
+# and served live by the wormhole daemon. Used as $EDITOR/$GIT_EDITOR/
+# $OPEN_IN_EDITOR so those track editor switches with no shell re-source.
+#
+# Relies on the wormhole editor token (cursor, code, code-insiders) being the
+# CLI executable name, which holds for the vscode-family editors.
+exec "$(wormhole editor)" "$@"
