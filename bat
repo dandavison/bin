@@ -1,0 +1,1 @@
+/Users/dan/src/bat/target/release/bat
